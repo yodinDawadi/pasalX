@@ -1,10 +1,11 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const {setUser} = require("../service/auth")
+const {setUser} = require("../service/auth");
+const user = require("../models/user");
 
  async function handleSignup(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password,role } = req.body;
     if (!username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -21,6 +22,7 @@ const {setUser} = require("../service/auth")
       username,
       email,
       password: hashedPassword,
+      role: role || "user"
     });
 
     await newUser.save();
@@ -34,7 +36,7 @@ const {setUser} = require("../service/auth")
  async function handleLogin(req, res) {
   
   try {
-    const { email, password } = req.body;
+    const { email, password, role} = req.body;
   const user = await User.findOne({ email });
     //check if user exist or not
     if (!user) {
@@ -56,6 +58,11 @@ const {setUser} = require("../service/auth")
   }
 }
 
+function handleLogout(req, res) {
+  res.clearCookie("uid");
+  res.status(200).json({ message: "Logged out successfully" });
+}
+
  async function getUser(req, res) {
   try {
     const userId = req.user._id;
@@ -70,5 +77,5 @@ const {setUser} = require("../service/auth")
 }
 
 module.exports = {
-    handleLogin,handleSignup,getUser
+    handleLogin,handleSignup,handleLogout,getUser
 }
