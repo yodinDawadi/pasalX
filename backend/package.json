@@ -8,6 +8,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server.js"
+    
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
