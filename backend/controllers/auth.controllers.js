@@ -48,7 +48,12 @@ const user = require("../models/user");
     if (passwordIsCorrect) {
       //Generate JWT token
       const token = setUser(user);
-      res.cookie("uid", token);
+      res.cookie('uid', token, {
+  httpOnly: true,
+  secure: true,      // Required for HTTPS (Render provides HTTPS)
+  sameSite: 'none',  // Allows cross-site requests (Vercel -> Render)
+  maxAge: 24 * 60 * 60 * 1000 // 1 day
+});
       return res.status(201).json([user,token]);
     } else {
       return res.status(400).json({ message: "Incorrect Password" });
