@@ -9,7 +9,7 @@ const orderRoutes = require("./routes/order")
 
 app.use(
   cors({
-    origin: "https://frontend-eight-kappa-0x7xr60nei.vercel.app",
+    origin: "https://pasalx.vercel.app",
     credentials: true,
   })
 );
