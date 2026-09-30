@@ -4,7 +4,7 @@ const cloudinary = require("../config/cloudinary");
 // CREATE
 async function addProduct(req, res) {
   try {
-    const { productName, productDescription, productPrice, stock } =
+    const { productName, productDescription, productPrice, stock, category } =
       req.body;
       const productImage = req.file?.path;
 
@@ -13,7 +13,8 @@ async function addProduct(req, res) {
       !productDescription ||
       !productImage ||
       !productPrice ||
-      !stock
+      !stock ||
+      !category
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -24,6 +25,7 @@ async function addProduct(req, res) {
       productImage,
       productPrice,
       stock,
+      category
     });
 
     await newProduct.save();
@@ -66,14 +68,14 @@ async function getProductById(req, res) {
 async function updateProduct(req, res) {
   try {
     const { id } = req.params;
-    const { productName, productDescription, productPrice, stock } = req.body;
+    const { productName, productDescription, productPrice, stock,category } = req.body;
 
     const existingProduct = await Product.findById(id);
     if (!existingProduct) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const updateData = { productName, productDescription, productPrice, stock };
+    const updateData = { productName, productDescription, productPrice, stock, category };
 
     // If a new image was uploaded, replace it and clean up the old one
     if (req.file) {

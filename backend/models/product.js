@@ -19,10 +19,17 @@ const productSchema = new mongoose.Schema(
     productPrice: {
       type: Number,
       required: true,
+      min: 0,
     },
-    stock: {
+    category: {
       type: String,
       required: true,
+      trim: true,
+    },
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
     },
   },
   { timestamps: true },
